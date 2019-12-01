@@ -1,16 +1,12 @@
-fn requirements(x : i32) -> i32
-{
+fn requirements(x: i32) -> i32 {
     let mut ret_val = 0;
-    let mut val : i32= x/3-2;
-    while val>0
-    {
-        ret_val = ret_val + val;
-        val = val/3-2;
+    let mut val: i32 = x / 3 - 2;
+    while val > 0 {
+        ret_val += val;
+        val = val / 3 - 2;
     }
-    return ret_val;
+    ret_val
 }
-
-
 
 fn main() {
     let input = "104451
@@ -114,6 +110,9 @@ fn main() {
 147071
 133740";
     let s: Vec<String> = input.split_whitespace().map(String::from).collect();
-    let vals : Vec<i32> = s.iter().map(|x| requirements(x.parse::<i32>().unwrap())).collect();
-    println!("{:?}",vals.iter().sum::<i32>());
+    let vals: Vec<i32> = s
+        .iter()
+        .map(|x| requirements(x.parse::<i32>().unwrap()))
+        .collect();
+    println!("{:?}", vals.iter().sum::<i32>());
 }
