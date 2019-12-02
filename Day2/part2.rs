@@ -1,4 +1,5 @@
 use std::convert::TryInto;
+use std::process;
 
 fn get_final_value(noun: i32, verb: i32, mut v: Vec<i32>) -> i32 {
     v[1] = noun;
@@ -26,11 +27,11 @@ fn main() {
         .map(|x| x.parse::<i32>().unwrap())
         .collect();
 
-    'outer: for i in 0..=99 {
+    for i in 0..=99 {
         for j in 0..=99 {
             if get_final_value(i, j, v.clone()) == output {
                 println!("{:}", 100 * i + j);
-                break 'outer;
+                process::exit(0);
             }
         }
     }
