@@ -1,5 +1,6 @@
 fn main() {
-    let input = String::from("104451
+    let input = String::from(
+        "104451
 112406
 109733
 86460
@@ -98,6 +99,13 @@ fn main() {
 143205
 140756
 147071
-133740");
-    println!("{:?}", input.split_whitespace().map(|x| x.parse::<i32>().unwrap()/3-2).sum::<i32>());
+133740",
+    );
+    println!(
+        "{:?}",
+        input
+            .split_whitespace()
+            .map(|x| x.parse::<i32>().unwrap() / 3 - 2)
+            .sum::<i32>()
+    );
 }
