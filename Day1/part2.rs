@@ -9,7 +9,8 @@ fn requirements(x: i32) -> i32 {
 }
 
 fn main() {
-    let input = "104451
+    let input = String::from(
+        "104451
 112406
 109733
 86460
@@ -108,11 +109,13 @@ fn main() {
 143205
 140756
 147071
-133740";
-    let s: Vec<String> = input.split_whitespace().map(String::from).collect();
-    let vals: Vec<i32> = s
-        .iter()
-        .map(|x| requirements(x.parse::<i32>().unwrap()))
-        .collect();
-    println!("{:?}", vals.iter().sum::<i32>());
+133740",
+    );
+    println!(
+        "{:?}",
+        input
+            .split_whitespace()
+            .map(|x| requirements(x.parse::<i32>().unwrap()))
+            .sum::<i32>()
+    );
 }
