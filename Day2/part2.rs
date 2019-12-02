@@ -26,8 +26,8 @@ fn main() {
         .map(|x| x.parse::<i32>().unwrap())
         .collect();
 
-    'outer: for i in 0..99 {
-        for j in 0..99 {
+    'outer: for i in 0..=99 {
+        for j in 0..=99 {
             if get_final_value(i, j, v.clone()) == output {
                 println!("{:}", 100 * i + j);
                 break 'outer;
