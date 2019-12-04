@@ -17,7 +17,11 @@ fn is_valid_password(num: u32) -> bool {
     for i in 1..vec.len() {
         match vec[i].cmp(&vec[i - 1]) {
             Ordering::Less => return false,
-            Ordering::Equal => double_digit = true,
+            Ordering::Equal => {
+                if (i < 2 || vec[i - 2] != vec[i]) && (i + 1 >= vec.len() || vec[i + 1] != vec[i]) {
+                    double_digit = true;
+                }
+            }
             _ => (),
         }
     }
