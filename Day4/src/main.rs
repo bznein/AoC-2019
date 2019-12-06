@@ -11,13 +11,17 @@ fn num_to_vec(mut input: u32) -> Vec<u32> {
     buf
 }
 
-fn is_valid_password(num: u32) -> bool {
+fn is_valid_password(num: u32, triple_digit_check : bool) -> bool {
     let vec = num_to_vec(num);
     let mut double_digit = false;
     for i in 1..vec.len() {
         match vec[i].cmp(&vec[i - 1]) {
             Ordering::Less => return false,
-            Ordering::Equal => double_digit = true,
+            Ordering::Equal => {
+                if (!triple_digit_check || i < 2 || vec[i - 2] != vec[i]) && (i + 1 >= vec.len() || vec[i + 1] != vec[i]) {
+                    double_digit = true;
+                }
+            }
             _ => (),
         }
     }
@@ -27,12 +31,17 @@ fn is_valid_password(num: u32) -> bool {
 fn main() {
     let lower: u32 = 367_479;
     let higher: u32 = 893_698;
-    let mut count = 0;
+    let mut count_p1 = 0;
+    let mut count_p2 = 0;
     for num in lower..=higher {
-        if is_valid_password(num) {
-            count += 1;
+        if is_valid_password(num, false) {
+            count_p1 += 1;
+        }
+        if is_valid_password(num, true) {
+            count_p2 += 1;
         }
     }
 
-    println!("{}", count);
+    println!("Part 1: {}", count_p1);
+    println!("Part 2: {}", count_p2);
 }
