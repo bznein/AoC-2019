@@ -51,10 +51,11 @@ fn main() {
     let v: Vec<String> = input.split_whitespace().map(|x| x.to_string()).collect();
     let mut orbit = HashMap::new();
 
-    for e in v {
+    v.iter().for_each(|e| {
         let t: Vec<String> = e.split(')').map(|x| x.to_string()).collect();
         orbit.insert(t[1].clone(), t[0].clone());
     }
+    );
 
     println!("Part 1: {}", part1(&orbit));
     println!("Part 2: {}", part2(&orbit));
