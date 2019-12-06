@@ -11,35 +11,61 @@ fn num_to_vec(mut input: u32) -> Vec<u32> {
     buf
 }
 
-fn is_valid_password(num: u32, triple_digit_check : bool) -> bool {
-    let vec = num_to_vec(num);
+fn is_valid_password(vec : &Vec<u32>) -> i32 {
     let mut double_digit = false;
+    let mut triple_digit_check = false;
     for i in 1..vec.len() {
         match vec[i].cmp(&vec[i - 1]) {
-            Ordering::Less => return false,
+            Ordering::Less => return 0,
             Ordering::Equal => {
-                if (!triple_digit_check || i < 2 || vec[i - 2] != vec[i]) && (i + 1 >= vec.len() || vec[i + 1] != vec[i]) {
-                    double_digit = true;
+			double_digit = true;
+                if (i < 2 || vec[i - 2] != vec[i]) && (i + 1 >= vec.len() || vec[i + 1] != vec[i]) {
+                    triple_digit_check = true;
                 }
             }
             _ => (),
         }
     }
-    double_digit
+	if !(double_digit || triple_digit_check)
+	{
+		return 0
+	}
+	else if double_digit && !triple_digit_check
+	{
+		return 1
+	}
+	2
+	
 }
+
+fn increment_vec(v : &mut Vec<u32>)
+{
+	let mut pos = v.len();
+	while 
+	{
+		pos-=1;
+		v[pos] = (v[pos]+1)%10;
+		v[pos] == 0
+	}{}
+}
+
 
 fn main() {
     let lower: u32 = 367_479;
     let higher: u32 = 893_698;
     let mut count_p1 = 0;
     let mut count_p2 = 0;
-    for num in lower..=higher {
-        if is_valid_password(num, false) {
-            count_p1 += 1;
-        }
-        if is_valid_password(num, true) {
-            count_p2 += 1;
-        }
+    let mut vec = num_to_vec(lower);
+    let high_vec = num_to_vec(higher);
+    while vec !=  high_vec {
+		let check = is_valid_password(&vec);
+		match check
+		{
+			1 => count_p1 +=1,
+			2 => {count_p1 +=1; count_p2 += 1},
+			0|_ => (),
+		}
+		increment_vec(&mut vec);
     }
 
     println!("Part 1: {}", count_p1);
