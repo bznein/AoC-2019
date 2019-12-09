@@ -1,9 +1,5 @@
-use std::io::{self, Read};
 
-use permutohedron::LexicalPermutation;
-
-
-struct IntcodeMachine {
+pub struct IntcodeMachine {
     program: Vec<i64>,
     ip: usize,
     input: i64,
@@ -18,6 +14,11 @@ impl IntcodeMachine {
             relative_base: 0,
             input: 0,
         }
+    }
+
+    pub fn set_input(&mut self, input: i64)
+    {
+        self.input = input;
     }
 
     fn get_mode(&self, instruction: i64, place: i64) -> i64 {
@@ -131,97 +132,4 @@ impl IntcodeMachine {
             }
         }
     }
-}
-
-
-fn main() {
-    let mut input = String::new();
-    io::stdin().read_to_string(&mut input).unwrap();
-
-    if input.ends_with('\n') {
-        input.truncate(input.len() - 1);
-    }
-
-    let v: Vec<i32> = input
-        .split(',')
-        .map(|x| x.parse::<i32>().unwrap())
-        .collect();
-
-    let mut data = [0, 1, 2, 3, 4];
-    let mut permutations = Vec::new();
-
-    loop {
-        permutations.push(data.to_vec());
-        if !data.next_permutation() {
-            break;
-        }
-    }
-
-    let mut max_power: i32 = -1;
-    let mut amps: Vec<Amplifier>;
-    for values in permutations {
-        amps = Vec::new();
-        for item in values.iter().take(5)
-		{
-            amps.push(Amplifier {
-                v: v.clone(),
-                phase: *item,
-                input: 0,
-                i: 0,
-            });
-        }
-
-        let mut vv = amps[0].run();
-        for item in amps.iter_mut().take(4+1).skip(1) {
-            item.input = vv;
-            vv = item.run();
-        }
-        if max_power < vv {
-            max_power = vv;
-        }
-    }
-    println!("Part 1: {}", max_power);
-
-    let mut data = [5, 6, 7, 8, 9];
-    let mut permutations = Vec::new();
-    let mut max_signal = -1;
-
-    loop {
-        permutations.push(data.to_vec());
-        if !data.next_permutation() {
-            break;
-        }
-    }
-
-    for values in permutations {
-        amps = Vec::new();
-        for item in values.iter().take(5) {
-            amps.push(Amplifier {
-                v: v.clone(),
-                phase: *item,
-                input: 0,
-                i: 0,
-            });
-        }
-
-        let mut input = 0;
-        loop {
-            amps[0].input = input;
-            let mut vv = amps[0].run();
-            if vv == -1 {
-                if input  > max_signal
-                {
-                    max_signal = input;
-                }
-                break;
-            }
-			for item in amps.iter_mut().take(4+1).skip(1){
-                item.input = vv;
-                vv = item.run();
-            }
-            input = vv;
-        }
-    }
-
-    println!("Part 2: {}", max_signal);
 }

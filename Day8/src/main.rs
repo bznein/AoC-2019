@@ -24,6 +24,7 @@ fn layer(v: &[i32], message : & mut Vec<i32>) -> (i32, i32, i32)
     (zeroes, ones, twos)
 }
 
+
 fn main ()
 {
     let mut input = String::new();
