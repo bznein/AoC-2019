@@ -1,6 +1,6 @@
 [package]
 name = "Day9"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Nikolas"]
 edition = "2018"
 
