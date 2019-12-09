@@ -23,9 +23,8 @@ fn main() {
     let mut input = String::new();
     io::stdin().read_to_string(&mut input).unwrap();
 
-    if input.ends_with('\n')
-    {
-        input.truncate(input.len()-1);
+    if input.ends_with('\n') {
+        input.truncate(input.len() - 1);
     }
     let v: Vec<i32> = input
         .split(',')
@@ -35,7 +34,6 @@ fn main() {
     println!("Part 1: {:}", get_final_value(12, 2, v.clone()));
     let output: i32 = 19_690_720;
 
-    
     for i in 0..=99 {
         for j in 0..=99 {
             if get_final_value(i, j, v.clone()) == output {

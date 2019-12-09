@@ -62,8 +62,8 @@ impl IntcodeMachine {
             let instruction = self.program[ip];
             let op_code = instruction % 100;
             let mode_1 = self.get_mode(instruction, 1000);
-            let mode_2 = self.get_mode(instruction, 10000);
-            let mode_3 = self.get_mode(instruction, 100000);
+            let mode_2 = self.get_mode(instruction, 10_000);
+            let mode_3 = self.get_mode(instruction, 100_000);
             match op_code {
                 1 => {
                     let v1 = self.read(self.program[ip + 1], mode_1);
@@ -138,7 +138,7 @@ fn main() {
         input.truncate(input.len() - 1);
     }
 
-    let mut v: Vec<i64> = input
+    let v: Vec<i64> = input
         .split(',')
         .map(|x| x.parse::<i64>().unwrap())
         .collect();

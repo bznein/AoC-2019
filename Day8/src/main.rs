@@ -35,10 +35,10 @@ fn main ()
     }
 
     let image : Vec<i32> = input.chars().map(|x| x.to_digit(10).unwrap() as i32).collect();
-    let w : i32 = 25;
-    let h : i32 = 6;
-    let size : usize = w as usize * h as usize;
-    let mut min_zeroes : i32 = w*h;
+    let width : i32 = 25;
+    let heigth : i32 = 6;
+    let size : usize = width as usize * heigth as usize;
+    let mut min_zeroes : i32 = width*heigth;
     let mut final_val = 0;
     let mut message : Vec<i32> = vec![-1; size];
 
@@ -54,10 +54,10 @@ fn main ()
     println!("Part 1: {}" , final_val);
     println!("Part 2: \n");
 
-    let w = w as usize;
-    let h = h as usize;
-    for i in 0..h
+    let width = width as usize;
+    let heigth = heigth as usize;
+    for i in 0..heigth
     {
-        println!("{:?}", &message[i*w..(i+1)*w]);
+        println!("{:?}", &message[i*width..(i+1)*width]);
     }
 }

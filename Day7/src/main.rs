@@ -46,7 +46,7 @@ impl Amplifier {
                 3 => {
                     self.v[v1] = match times_input_requested {
                         0 => {
-                            if (self.phase >= 0) {
+                            if self.phase >= 0 {
                                 self.phase
                             } else {
                                 self.input
@@ -131,19 +131,20 @@ fn main() {
     let mut amps: Vec<Amplifier>;
     for values in permutations {
         amps = Vec::new();
-        for i in 0..5 {
+        for item in values.iter().take(5)
+		{
             amps.push(Amplifier {
                 v: v.clone(),
-                phase: values[i],
+                phase: *item,
                 input: 0,
                 i: 0,
             });
         }
 
         let mut vv = amps[0].run();
-        for i in 1..=4 {
-            amps[i].input = vv;
-            vv = amps[i].run();
+        for item in amps.iter_mut().take(4+1).skip(1) {
+            item.input = vv;
+            vv = item.run();
         }
         if max_power < vv {
             max_power = vv;
@@ -163,12 +164,11 @@ fn main() {
     }
 
     for values in permutations {
-        println!("Values: {:?}", values);
         amps = Vec::new();
-        for i in 0..5 {
+        for item in values.iter().take(5) {
             amps.push(Amplifier {
                 v: v.clone(),
-                phase: values[i],
+                phase: *item,
                 input: 0,
                 i: 0,
             });
@@ -178,16 +178,16 @@ fn main() {
         loop {
             amps[0].input = input;
             let mut vv = amps[0].run();
-            if (vv == -1) {
+            if vv == -1 {
                 if input  > max_signal
                 {
                     max_signal = input;
                 }
                 break;
             }
-            for i in 1..=4 {
-                amps[i].input = vv;
-                vv = amps[i].run();
+			for item in amps.iter_mut().take(4+1).skip(1){
+                item.input = vv;
+                vv = item.run();
             }
             input = vv;
         }

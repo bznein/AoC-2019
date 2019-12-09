@@ -11,7 +11,7 @@ fn num_to_vec(mut input: u32) -> Vec<u32> {
     buf
 }
 
-fn is_valid_password(vec: &Vec<u32>) -> i32 {
+fn is_valid_password(vec: &[u32]) -> i32 {
     let mut double_digit = false;
     let mut triple_digit_check = false;
     for i in 1..vec.len() {
@@ -36,11 +36,14 @@ fn is_valid_password(vec: &Vec<u32>) -> i32 {
 
 fn increment_vec(v: &mut Vec<u32>) {
     let mut pos = v.len();
-    while {
+    loop {
         pos -= 1;
         v[pos] = (v[pos] + 1) % 10;
-        v[pos] == 0
-    } {}
+        if v[pos] != 0
+        {
+            break;
+        }
+    } 
 }
 
 fn main() {
