@@ -2,7 +2,8 @@
 pub struct IntcodeMachine {
     program: Vec<i64>,
     ip: usize,
-    input: i64,
+    input: Option<i64>,
+    phase: Option<i64>,
     relative_base: i64,
 }
 
@@ -12,13 +13,19 @@ impl IntcodeMachine {
             program,
             ip: 0,
             relative_base: 0,
-            input: 0,
+            input: None,
+            phase: None,
         }
     }
 
     pub fn set_input(&mut self, input: i64)
     {
-        self.input = input;
+        self.input = Some(input);
+    }
+
+    pub fn set_phase(&mut self, phase: i64)
+    {
+        self.phase = Some(phase);
     }
 
     fn get_mode(&self, instruction: i64, place: i64) -> i64 {
@@ -82,7 +89,19 @@ impl IntcodeMachine {
                     ip += 4;
                 }
                 3 => {
-                    self.write(self.program[ip + 1], mode_1, self.input);
+                    let input_val =
+                    {
+                        match self.phase
+                        {
+                            Some(x) => x,
+                            None => match self.input
+                            {
+                                Some(y) => y,
+                                None => panic!("No input provided"),
+                            }
+                        }
+                    };
+                    self.write(self.program[ip + 1], mode_1, input_val);
                     ip += 2;
                 }
                 4 => {
