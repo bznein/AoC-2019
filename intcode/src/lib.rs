@@ -93,7 +93,11 @@ impl IntcodeMachine {
                     {
                         match self.phase
                         {
-                            Some(x) => x,
+                            Some(x) =>
+                            {
+                                self.phase = None;
+                                x
+                            }
                             None => match self.input
                             {
                                 Some(y) => y,
