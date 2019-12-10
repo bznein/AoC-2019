@@ -1,5 +1,4 @@
 use std::io::{self, Read};
-
 fn distance(from: (usize, usize), to: (usize, usize)) -> f64 {
     let from = (from.0 as isize, from.1 as isize);
     let to = (to.0 as isize, to.1 as isize);
@@ -8,11 +7,11 @@ fn distance(from: (usize, usize), to: (usize, usize)) -> f64 {
     (d1.powi(2) + d2.powi(2)).sqrt()
 }
 
-fn is_visible(grid: &Vec<Vec<char>>, from: (usize, usize), to: (usize, usize)) -> bool {
+fn is_visible(grid: &[Vec<char>], from: (usize, usize), to: (usize, usize)) -> bool {
     let distance_val = distance(from, to);
-    for i in 0..grid.len() {
-        for j in 0..grid[i].len() {
-            if (i, j) == from || (i, j) == to || grid[i][j] == '.' {
+    for (i,item) in grid.iter().enumerate() {
+        for (j, item_j) in item.iter().enumerate() {
+            if (i, j) == from || (i, j) == to || *item_j == '.' {
                 continue;
             }
             if (distance((i, j), from) + distance((i, j), to) - distance_val).abs() < 0.0001 {
@@ -23,11 +22,11 @@ fn is_visible(grid: &Vec<Vec<char>>, from: (usize, usize), to: (usize, usize)) -
     true
 }
 
-fn visible_asteroids(grid: &Vec<Vec<char>>, i: usize, j: usize) -> i32 {
+fn visible_asteroids(grid: &[Vec<char>], i: usize, j: usize) -> i32 {
     let mut tot = 0;
-    for ii in 0..grid.len() {
-        for jj in 0..grid[ii].len() {
-            if (i == ii && j == jj) || grid[ii][jj] == '.' {
+    for (ii,item) in grid.iter().enumerate() {
+        for (jj, item_j) in item.iter().enumerate() {
+            if (i == ii && j == jj) || *item_j == '.' {
                 continue;
             }
             /* Got to an asteroid, check if visibile */
@@ -59,22 +58,20 @@ fn clockwise_angle(c : (usize, usize), a :(usize,usize), b : (usize, usize)) -> 
 }
 
 fn closest_right_side(
-    grid: &Vec<Vec<char>>,
+    grid: &[Vec<char>],
     line: ((usize, usize), (usize, usize)),
 ) -> (usize, usize) {
     let mut min_dist = (grid.len() * grid.len() * grid.len()) as f64;
     let mut closest = (grid.len(), grid.len());
-    for i in 0..grid.len() {
-        for j in 0..grid[i].len() {
-            if grid[i][j] == '#' {
+    for (i,item) in grid.iter().enumerate() {
+        for (j, item_j) in item.iter().enumerate() {
+            if *item_j == '#' {
                 let dist = clockwise_angle(line.0, line.1, (i,j));
-                if dist!=0.0 {
-                    if (dist < min_dist) || (dist==min_dist && distance((i,j),line.0)<distance(closest,line.0)) 
+                if dist!=0.0 && (dist < min_dist) || (dist==min_dist && distance((i,j),line.0)<distance(closest,line.0)) 
                     {
                         min_dist = dist;
                         closest = (i, j);
                     }
-                }
             }
         }
     }
@@ -126,7 +123,7 @@ fn main() {
             current_asteroid = (i, best_pos.1);
             pulverizing_line = (best_pos, current_asteroid);
             asteroids_pulverized += 1;
-            grid[i][best_pos.1] = std::char::from_digit(asteroids_pulverized % 10, 10).unwrap();
+            grid[i][best_pos.1] = '.';
             break;
         }
     }
@@ -135,8 +132,7 @@ fn main() {
         current_asteroid = closest_right_side(&grid, pulverizing_line);
         pulverizing_line = (best_pos, current_asteroid);
         asteroids_pulverized += 1;
-        grid[current_asteroid.0][current_asteroid.1] =
-            std::char::from_digit(asteroids_pulverized % 10, 10).unwrap();
+        grid[current_asteroid.0][current_asteroid.1] ='.';
             
     }
     println!("Part 2: {} ", current_asteroid.1*100+current_asteroid.0)
