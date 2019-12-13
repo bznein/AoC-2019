@@ -1,10 +1,10 @@
-
 pub struct IntcodeMachine {
     program: Vec<i64>,
     ip: usize,
     input: Option<i64>,
     phase: Option<i64>,
     relative_base: i64,
+	output : Option<i64>,
 }
 
 impl IntcodeMachine {
@@ -15,6 +15,7 @@ impl IntcodeMachine {
             relative_base: 0,
             input: None,
             phase: None,
+			output: None,
         }
     }
 
@@ -31,6 +32,11 @@ impl IntcodeMachine {
     fn get_mode(&self, instruction: i64, place: i64) -> i64 {
         (instruction % place) / (place / 10)
     }
+
+	pub fn get_output(&self) -> Option<i64>
+	{
+		self.output
+	}
 
     fn read(&self, param: i64, mode: i64) -> i64 {
         match mode {
@@ -68,6 +74,7 @@ impl IntcodeMachine {
     }
 
     pub fn run(&mut self) {
+		self.output = None;
         let mut ip: usize = self.ip;
         loop {
             let instruction = self.program[ip];
@@ -109,8 +116,10 @@ impl IntcodeMachine {
                     ip += 2;
                 }
                 4 => {
-                    println!("OUT: {}", self.read(self.program[ip + 1], mode_1));
+					self.output = Some(self.read(self.program[ip + 1], mode_1));
                     ip += 2;
+					self.ip = ip;
+					break;
                 }
                 5 => {
                     let check = self.read(self.program[ip + 1], mode_1);
