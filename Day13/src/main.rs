@@ -5,27 +5,24 @@ use std::cmp::max;
 use std::cmp::min;
 use std::collections::HashMap;
 use std::io::{self, Read};
-use termion::cursor;
+use termion::{cursor,color};
 use std::time::Duration;
 use std::thread;
 use std::io::stdout;
 use std::io::Write;
 
 fn print_game(m: &HashMap<(i64, i64), i64>, (min_x, min_y, max_x, max_y): (i64, i64, i64, i64), score: Option<i64>) {
-    println!("{}", cursor::Goto(0,0));
+      println!("{}{}",cursor::Goto(0,0), cursor::Hide);
     for i in min_y..=max_y {
         for j in min_x..=max_x {
-            print!(
-                "{}",
                 match m.get(&(j, i)).unwrap() {
-                    0 => " ",
-                    1 => "|",
-                    2 => "▉",
-                    3 => "▁",
-                    4 => "o",
+                    0 => print!(" "),
+                    1 => print!("{}",if i == min_y {"_"} else {"|"}),
+                    2 => print!("{}▉{}",color::Fg(color::Red),color::Fg(color::Reset)),
+                    3 => print!("▁"),
+                    4 => print!("{}●{}",color::Fg(color::Green),color::Fg(color::Reset)),
                     _ => panic!("Error in print"),
                 }
-            )
         }
         println!("");
     }
@@ -132,7 +129,7 @@ fn main() {
 
         m.insert((x, y), t_id);
         print_game(&m, (min_x, min_y, max_x, max_y), Some(score));
-        thread::sleep(Duration::from_millis(1));
+        thread::sleep(Duration::from_millis(5));
     }
 
     //println!("Score: {}", score);

@@ -1,11 +1,24 @@
+
+#[derive (Copy, Clone, Eq, PartialEq)]
+pub enum State
+{
+    Running,
+    Halted,
+    Stopped,
+}
+
+use crate::State::*;
+
 pub struct IntcodeMachine {
     program: Vec<i64>,
     ip: usize,
     input: Option<i64>,
     phase: Option<i64>,
     relative_base: i64,
-	output : Option<i64>,
+    output: Option<i64>,
+    state: State,
 }
+
 
 impl IntcodeMachine {
     pub fn new(program: Vec<i64>) -> IntcodeMachine {
@@ -15,17 +28,16 @@ impl IntcodeMachine {
             relative_base: 0,
             input: None,
             phase: None,
-			output: None,
+            output: None,
+            state: Stopped,
         }
     }
 
-    pub fn set_input(&mut self, input: i64)
-    {
+    pub fn set_input(&mut self, input: i64) {
         self.input = Some(input);
     }
 
-    pub fn set_phase(&mut self, phase: i64)
-    {
+    pub fn set_phase(&mut self, phase: i64) {
         self.phase = Some(phase);
     }
 
@@ -33,10 +45,9 @@ impl IntcodeMachine {
         (instruction % place) / (place / 10)
     }
 
-	pub fn get_output(&self) -> Option<i64>
-	{
-		self.output
-	}
+    pub fn get_output(&self) -> Option<i64> {
+        self.output
+    }
 
     fn read(&self, param: i64, mode: i64) -> i64 {
         match mode {
@@ -73,8 +84,14 @@ impl IntcodeMachine {
         self.program[address] = val;
     }
 
+    pub fn state(&self) -> State
+    {
+        self.state
+    }
+
     pub fn run(&mut self) {
-		self.output = None;
+        self.output = None;
+        self.state = Running;
         let mut ip: usize = self.ip;
         loop {
             let instruction = self.program[ip];
@@ -96,30 +113,27 @@ impl IntcodeMachine {
                     ip += 4;
                 }
                 3 => {
-                    let input_val =
-                    {
-                        match self.phase
-                        {
-                            Some(x) =>
-                            {
+                    let input_val = {
+                        match self.phase {
+                            Some(x) => {
                                 self.phase = None;
                                 x
                             }
-                            None => match self.input
-                            {
+                            None => match self.input {
                                 Some(y) => y,
                                 None => panic!("No input provided"),
-                            }
+                            },
                         }
                     };
                     self.write(self.program[ip + 1], mode_1, input_val);
                     ip += 2;
                 }
                 4 => {
-					self.output = Some(self.read(self.program[ip + 1], mode_1));
+                    self.output = Some(self.read(self.program[ip + 1], mode_1));
                     ip += 2;
-					self.ip = ip;
-					break;
+                    self.ip = ip;
+                    self.state = Stopped;
+                    break;
                 }
                 5 => {
                     let check = self.read(self.program[ip + 1], mode_1);
@@ -158,6 +172,7 @@ impl IntcodeMachine {
                 }
                 99 => {
                     self.ip = ip;
+                    self.state = Halted;
                     break;
                 }
                 _ => panic!("Unknown opcode!"),
