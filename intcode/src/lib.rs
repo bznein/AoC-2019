@@ -49,6 +49,7 @@ impl IntcodeMachine {
         }
     }
 
+
     pub fn set_input(&mut self, input: i64) {
         self.input = Some(input);
     }
