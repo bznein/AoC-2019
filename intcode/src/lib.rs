@@ -20,10 +20,26 @@ pub struct IntcodeMachine {
 }
 
 
+impl Clone for IntcodeMachine
+{
+    fn clone(&self) -> IntcodeMachine
+    {
+        IntcodeMachine {
+            program: self.program.clone(),
+            ip: self.ip,
+            relative_base: self.relative_base,
+            input: self.input,
+            phase: self.phase,
+            output: self.output,
+            state: self.state,
+        }
+    }
+}
+
 impl IntcodeMachine {
     pub fn new(program: Vec<i64>) -> IntcodeMachine {
         IntcodeMachine {
-            program,
+            program: program,
             ip: 0,
             relative_base: 0,
             input: None,
