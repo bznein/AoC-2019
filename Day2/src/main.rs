@@ -1,23 +1,7 @@
+use intcode::IntcodeMachine;
+use itertools::Itertools;
 use std::io::{self, Read};
 use std::process;
-
-fn get_final_value(noun: i32, verb: i32, mut v: Vec<i32>) -> i32 {
-    v[1] = noun;
-    v[2] = verb;
-    for i in (0..v.len()).step_by(4) {
-        let v1: usize = v[i + 1] as usize;
-        let v2: usize = v[i + 2] as usize;
-        let v3: usize = v[i + 3] as usize;
-        match v[i] {
-            1 => v[v3] = v[v1] + v[v2],
-            2 => v[v3] = v[v1] * v[v2],
-            99 => break,
-            _ => (),
-        }
-    }
-
-    v[0]
-}
 
 fn main() {
     let mut input = String::new();
@@ -26,20 +10,26 @@ fn main() {
     if input.ends_with('\n') {
         input.truncate(input.len() - 1);
     }
-    let v: Vec<i32> = input
+    let mut v: Vec<i64> = input
         .split(',')
-        .map(|x| x.parse::<i32>().unwrap())
+        .map(|x| x.parse::<i64>().unwrap())
         .collect();
 
-    println!("Part 1: {:}", get_final_value(12, 2, v.clone()));
-    let output: i32 = 19_690_720;
+    v[1] = 12;
+    v[2] = 2;
+    let mut executor = IntcodeMachine::new(v.clone());
+    executor.run();
+    println!("Part 1: {:}", executor.peek_memory(0));
+    let output: i64 = 19_690_720;
 
-    for i in 0..=99 {
-        for j in 0..=99 {
-            if get_final_value(i, j, v.clone()) == output {
-                println!("Part 2: {}", 100 * i + j);
-                process::exit(0);
-            }
-        }
-    }
+    (0..99)
+        .cartesian_product(0..99)
+        .find(|(i, j)| {
+            v[1] = *i; v[2]= *j;
+            let mut exec = IntcodeMachine::new(v.clone());
+            exec.run();
+            exec.peek_memory(0)
+        } == output)
+        .iter()
+        .for_each(|(i, j)| println!("Part 2: {}", 100 * i + j));
 }

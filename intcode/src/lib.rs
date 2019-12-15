@@ -105,6 +105,11 @@ impl IntcodeMachine {
         self.state
     }
 
+    pub fn peek_memory(&self, i: usize) -> i64
+    {
+        self.program[i]
+    }
+
     pub fn run(&mut self) {
         self.output = None;
         self.state = Running;
