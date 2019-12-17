@@ -1,0 +1,8 @@
+[package]
+name = "Day17"
+version = "0.1.0"
+authors = ["Nikolas"]
+edition = "2018"
+
+[dependencies]
+intcode = { path ="../intcode" }

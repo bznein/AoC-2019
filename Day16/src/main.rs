@@ -52,7 +52,6 @@ fn fft(v: & mut Vec<i32>, phases: usize) -> Vec<i32>
 
 fn fft_offset(v: & mut Vec<i32>, phases: usize, offset: usize)-> Vec<i32> 
 {
-	/* Compute the baseline, adding every digit from offset */
 	let mut zeros = vec![0;v.len()];
 	let mut vs = vec![v,& mut zeros ];
 	let len = vs[0].len();
@@ -75,7 +74,6 @@ fn fft_offset(v: & mut Vec<i32>, phases: usize, offset: usize)-> Vec<i32>
 		{
 			vs[new_v_index][i] = vs[new_v_index][i]%10;
 		}
-		//println!("Phase {}: {:?}", p, vs[new_v_index]);
 	}
 	vs[phases%2 as usize].to_vec()
 	

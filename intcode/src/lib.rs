@@ -1,10 +1,11 @@
 
-#[derive (Copy, Clone, Eq, PartialEq)]
+#[derive (Copy, Clone, Eq, PartialEq, Debug)]
 pub enum State
 {
     Running,
     Halted,
     Stopped,
+	WaitingForInput,
 }
 
 use crate::State::*;
@@ -142,8 +143,15 @@ impl IntcodeMachine {
                                 x
                             }
                             None => match self.input {
-                                Some(y) => y,
-                                None => panic!("No input provided"),
+                                Some(y) => {
+									self.input=None;
+									y
+								}
+                                None => {
+									self.state=WaitingForInput;
+									self.ip = ip;
+									break;
+								},
                             },
                         }
                     };
