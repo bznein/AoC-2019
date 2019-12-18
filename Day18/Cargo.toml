@@ -9,5 +9,4 @@ edition = "2018"
 [dependencies]
 crossterm = "0.14.0"
 pathfinding = "2.0.1"
-permutohedron = "0.2.4"
-factorial = "0.1.1"
+maplit = "1.0.2"

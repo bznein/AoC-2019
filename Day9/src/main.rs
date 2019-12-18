@@ -15,12 +15,12 @@ fn main() {
         .collect();
 
     let mut executor = IntcodeMachine::new(v.clone());
-    println!("Part 1: ");
     executor.set_input(1);
     executor.run();
+    println!("Part 1: {}", executor.get_output().unwrap());
 
-    println!("Part 2: ");
     let mut executor = IntcodeMachine::new(v);
     executor.set_input(2);
     executor.run();
+    println!("Part 2: {}", executor.get_output().unwrap());
 }
