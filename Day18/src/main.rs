@@ -71,7 +71,7 @@ fn print_grid(grid: &[Vec<char>], pos: (usize, usize), colormap: &HashMap<char,C
             let column = grid[i][j];
             if column.is_ascii_lowercase() {
                execute!(stdout, SetForegroundColor(*colormap.get(&column.to_ascii_uppercase()).unwrap()));
-                print!("⚩");
+                print!("🔑");
             } else if column.is_ascii_uppercase() {
                 execute!(stdout, SetForegroundColor(*colormap.get(&column).unwrap()));
                 print!("█");

@@ -1,36 +1,6 @@
-
 use std::io::{self, Read};
 use intcode::State;
 use intcode::IntcodeMachine;
-
-fn fits_square(grid: &Vec<Vec<i64>>, i: usize, j: usize, size: usize) -> bool
-{
-	if i <size  || j<size
-	{
-		return false;
-	}
-	for v in 0..size
-	{
-		if grid[i-v][j] != 1 || grid[i][j-v] !=1
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-fn print_grid(grid: &Vec<Vec<i64>>)
-{
-	for i in grid
-	{
-		for val in i 
-		{
-			print!("{}", val);
-		}
-		println!("");
-	}
-}
-
 
 fn main() {
 
@@ -68,11 +38,11 @@ let mut input = String::new();
 	
 	
 	let size = 2000;
-	let mut grid = vec![vec![0;size];size];
+	let mut start_j=0;
 	'outer: for i in 0..size
 	{
-		let mut consecutive_ones = 0;
-		for j in 0..size
+		let mut one_found = false;
+		for j in start_j..size
 		{
 			let mut executor = IntcodeMachine::new(v.clone());
 			executor.set_input(i as i64);
@@ -80,20 +50,43 @@ let mut input = String::new();
 			executor.set_input(j as i64);
 			executor.run();
 			let val = executor.get_output().unwrap();
-			grid[i as usize][j as usize]=(val);
-			if val ==1
+			if val == 1
 			{
-				consecutive_ones += 1;
-				if consecutive_ones == 100  && fits_square(&grid,  i, j,100)
+				one_found = true;
+				start_j = j;
+				let mut executor = IntcodeMachine::new(v.clone());
+				executor.set_input(i as i64 +99);
+				executor.run();
+				executor.set_input(j as i64);
+				executor.run();
+				let val = executor.get_output().unwrap();
+				if val ==1
 				{
-					println!("Part 2: {}", (i-99)*10000+(j-99));
-					break 'outer;
+					let mut executor = IntcodeMachine::new(v.clone());
+					executor.set_input(i as i64);
+					executor.run();
+					executor.set_input(j as i64 + 99);
+					executor.run();
+					let val = executor.get_output().unwrap();
+					if val ==1
+					{
+						println!("Part 2: {}", (i)*10000+(j));
+						break 'outer;
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 			else
 			{
-				consecutive_ones = 0;
+				if one_found
+				{
+					break;
+				}
 			}
+		
 		}
 	}
 }
