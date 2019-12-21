@@ -1,47 +1,49 @@
 use core::i64::MAX;
 use core::i64::MIN;
+use crossterm::{cursor::*, execute, style::*, terminal::*, ExecutableCommand};
 use intcode::IntcodeMachine;
 use std::cmp::max;
 use std::cmp::min;
 use std::collections::HashMap;
-use std::io::{self, Read};
-use crossterm::{terminal::*,style::*,execute,ExecutableCommand, cursor::*};
-use std::time::Duration;
-use std::thread;
 use std::io::stdout;
 use std::io::Write;
+use std::io::{self, Read};
+use std::thread;
+use std::time::Duration;
 
-fn print_game(m: &HashMap<(i64, i64), i64>, (min_x, min_y, max_x, max_y): (i64, i64, i64, i64), score: Option<i64>) {
+fn print_game(
+    m: &HashMap<(i64, i64), i64>,
+    (min_x, min_y, max_x, max_y): (i64, i64, i64, i64),
+    score: Option<i64>,
+) {
     let mut stdout = stdout();
-    execute!(stdout, MoveTo(0, 0),Hide);
+    execute!(stdout, MoveTo(0, 0), Hide);
     for i in min_y..=max_y {
         for j in min_x..=max_x {
-                match m.get(&(j, i)).unwrap() {
-                    0 => print!(" "),
-                    1 => print!("{}",if i == min_y {"_"} else {"|"}),
-                    2 => {
-                        execute!(stdout,SetForegroundColor(Color::Red));
-                        print!("|");
-                        execute!(stdout,SetForegroundColor(Color::Reset));
-                    }
-                    3 => print!("_"),
-                    4 =>
-                    {
-                        execute!(stdout,SetForegroundColor(Color::Green));
-                        print!(".");
-                        execute!(stdout,SetForegroundColor(Color::Reset));
-                    }
-                    _ => panic!("Error in print"),
+            match m.get(&(j, i)).unwrap() {
+                0 => print!(" "),
+                1 => print!("{}", if i == min_y { "_" } else { "|" }),
+                2 => {
+                    execute!(stdout, SetForegroundColor(Color::Red));
+                    print!("|");
+                    execute!(stdout, SetForegroundColor(Color::Reset));
                 }
+                3 => print!("_"),
+                4 => {
+                    execute!(stdout, SetForegroundColor(Color::Green));
+                    print!(".");
+                    execute!(stdout, SetForegroundColor(Color::Reset));
+                }
+                _ => panic!("Error in print"),
+            }
         }
         println!("");
     }
-    match score
-    {
+    match score {
         None => (),
-        Some(x) => print!("Score: {}" , x),
+        Some(x) => print!("Score: {}", x),
     }
-   }
+}
 
 fn main() {
     let mut input = String::new();
@@ -133,8 +135,7 @@ fn main() {
             0
         };
 
-        if x == -1
-        {
+        if x == -1 {
             score = t_id;
         }
 

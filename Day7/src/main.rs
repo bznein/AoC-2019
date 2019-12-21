@@ -1,6 +1,6 @@
-use std::io::{self, Read};
-use permutohedron::LexicalPermutation;
 use intcode::IntcodeMachine;
+use permutohedron::LexicalPermutation;
+use std::io::{self, Read};
 
 fn main() {
     let mut input = String::new();
@@ -29,8 +29,7 @@ fn main() {
     let mut amps: Vec<IntcodeMachine>;
     for values in permutations {
         amps = Vec::new();
-        for item in values.iter().take(5)
-		    {
+        for item in values.iter().take(5) {
             let mut executor = IntcodeMachine::new(v.clone());
             executor.set_phase(*item);
             amps.push(executor);
@@ -39,7 +38,7 @@ fn main() {
         amps[0].set_input(0);
         amps[0].run();
         let mut vv = amps[0].get_output().unwrap();
-        for item in amps.iter_mut().take(4+1).skip(1) {
+        for item in amps.iter_mut().take(4 + 1).skip(1) {
             item.set_input(vv);
             item.run();
             vv = item.get_output().unwrap();
@@ -75,14 +74,13 @@ fn main() {
             amps[0].run();
             let mut vv = amps[0].get_output();
             if !vv.is_some() {
-                if input  > max_signal
-                {
+                if input > max_signal {
                     max_signal = input;
                 }
                 break;
             }
             let mut vv = vv.unwrap();
-			      for item in amps.iter_mut().take(4+1).skip(1){
+            for item in amps.iter_mut().take(4 + 1).skip(1) {
                 item.set_input(vv);
                 item.run();
                 vv = item.get_output().unwrap();

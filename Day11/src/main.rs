@@ -1,9 +1,9 @@
 use intcode::IntcodeMachine;
+use intcode::State::*;
 use std::cmp::max;
 use std::cmp::min;
 use std::collections::HashMap;
 use std::io::{self, Read};
-use intcode::State::*;
 
 #[derive(PartialEq, Eq, Hash, Debug, Copy, Clone)]
 enum MoveDirection {
@@ -118,7 +118,7 @@ fn main() {
         }
         executor.set_input(*m.get(&(p.i, p.j)).unwrap());
         executor.run();
-        if executor.state()==Halted {
+        if executor.state() == Halted {
             println!("Part 1: {}", m.len());
             break;
         }
@@ -141,7 +141,6 @@ fn main() {
     executor.set_input(1);
     executor.run();
 
-
     let new_val = executor.get_output().unwrap();
     m.insert((p.i, p.j), new_val);
     executor.run();
@@ -157,7 +156,7 @@ fn main() {
         }
         executor.set_input(*m.get(&(p.i, p.j)).unwrap());
         executor.run();
-        if executor.state()==Halted {
+        if executor.state() == Halted {
             println!("Part 2");
             print_map(min_i, min_j, max_i, max_j, m);
             break;

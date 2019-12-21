@@ -1,42 +1,35 @@
-use std::io::{self, Read};
-use std::time::Duration;
-use std::thread;
 use core::f64::MAX;
-use std::io::{Write, stdout};
-use crossterm::{terminal::*,style::*,execute,ExecutableCommand, cursor::*};
+use crossterm::{cursor::*, execute, style::*, terminal::*, ExecutableCommand};
+use std::io::{self, Read};
+use std::io::{stdout, Write};
+use std::thread;
+use std::time::Duration;
 
-fn print_grid(grid: &[Vec<char>], asteroid_to_destroy: Option<(usize,usize)>)
-{
+fn print_grid(grid: &[Vec<char>], asteroid_to_destroy: Option<(usize, usize)>) {
     let mut stdout = stdout();
-    execute!(stdout, MoveTo(0, 0),Hide);
-    for (idx_i,i) in grid.iter().enumerate()
-    {
-        for (idx_j,j) in i.iter().enumerate()
-        {
-            match j
-            {
-                'x' =>
-                {
-                    execute!(stdout,SetForegroundColor(Color::Green));
+    execute!(stdout, MoveTo(0, 0), Hide);
+    for (idx_i, i) in grid.iter().enumerate() {
+        for (idx_j, j) in i.iter().enumerate() {
+            match j {
+                'x' => {
+                    execute!(stdout, SetForegroundColor(Color::Green));
                     print!("X");
                 }
-                '.' =>
-                {
-                    execute!(stdout,SetForegroundColor(Color::Black));
+                '.' => {
+                    execute!(stdout, SetForegroundColor(Color::Black));
                     print!(".");
                 }
-                '#' =>
-                {
-                    if (asteroid_to_destroy.is_some() && asteroid_to_destroy.unwrap()==(idx_i,idx_j))
+                '#' => {
+                    if (asteroid_to_destroy.is_some()
+                        && asteroid_to_destroy.unwrap() == (idx_i, idx_j))
                     {
-                        execute!(stdout,SetForegroundColor(Color::Red));
-                    }
-                    else {
-                        execute!(stdout,SetForegroundColor(Color::Blue));
+                        execute!(stdout, SetForegroundColor(Color::Red));
+                    } else {
+                        execute!(stdout, SetForegroundColor(Color::Blue));
                     }
                     print!("#");
                 }
-                _ => panic!("Unknown character")
+                _ => panic!("Unknown character"),
             }
         }
         println!("");
@@ -115,24 +108,17 @@ fn closest_right_side(
                 {
                     min_dist = dist;
                     closest = (i, j);
-                }
-                else if (dist == 0.0)
-                {
-                    candidate_single=(i,j)
+                } else if (dist == 0.0) {
+                    candidate_single = (i, j)
                 }
             }
         }
     }
-    if closest != (grid.len(), grid.len())
-    {
+    if closest != (grid.len(), grid.len()) {
         closest
-    }
-    else if candidate_single != (grid.len(), grid.len())
-    {
+    } else if candidate_single != (grid.len(), grid.len()) {
         candidate_single
-    }
-    else
-    {
+    } else {
         panic!("No asteroid found!");
     }
 }
@@ -167,12 +153,12 @@ fn main() {
     }
     println!("Part 1: {}", max_asteroids);
     let mut stdout = stdout();
-    execute!(stdout,Clear(ClearType::All));
+    execute!(stdout, Clear(ClearType::All));
 
     let mut grid = grid;
     let best_pos = best_pos;
     grid[best_pos.0][best_pos.1] = 'x';
-    print_grid(&grid,None);
+    print_grid(&grid, None);
 
     let mut asteroids_pulverized = 0;
 
@@ -186,23 +172,21 @@ fn main() {
             grid[i][best_pos.1] = '.';
             break;
         }
-        print_grid(&grid,None);
+        print_grid(&grid, None);
     }
 
     let mut part_two_result = 0;
-    for _i in 1..tot_asteroids-1
-    {
+    for _i in 1..tot_asteroids - 1 {
         current_asteroid = closest_right_side(&grid, pulverizing_line);
         pulverizing_line = (best_pos, current_asteroid);
         asteroids_pulverized += 1;
-        print_grid(&grid,Some(current_asteroid));
+        print_grid(&grid, Some(current_asteroid));
         thread::sleep(Duration::from_millis(50));
         grid[current_asteroid.0][current_asteroid.1] = '.';
-        print_grid(&grid,None);
+        print_grid(&grid, None);
         thread::sleep(Duration::from_millis(50));
-        if asteroids_pulverized == 200
-        {
-            part_two_result=current_asteroid.1 * 100 + current_asteroid.0;
+        if asteroids_pulverized == 200 {
+            part_two_result = current_asteroid.1 * 100 + current_asteroid.0;
         }
     }
     println!("Part 2: {} ", part_two_result);

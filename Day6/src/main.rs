@@ -43,9 +43,8 @@ fn main() {
     let mut input = String::new();
     io::stdin().read_to_string(&mut input).unwrap();
 
-    if input.ends_with('\n')
-    {
-        input.truncate(input.len()-1);
+    if input.ends_with('\n') {
+        input.truncate(input.len() - 1);
     }
 
     let v: Vec<String> = input.split_whitespace().map(|x| x.to_string()).collect();
@@ -54,8 +53,7 @@ fn main() {
     v.iter().for_each(|e| {
         let t: Vec<String> = e.split(')').map(|x| x.to_string()).collect();
         orbit.insert(t[1].clone(), t[0].clone());
-    }
-    );
+    });
 
     println!("Part 1: {}", part1(&orbit));
     println!("Part 2: {}", part2(&orbit));

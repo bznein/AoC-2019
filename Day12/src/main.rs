@@ -1,6 +1,6 @@
 use num::integer::lcm;
 
-#[derive (Clone)]
+#[derive(Clone)]
 struct Moon {
     p: Vec<i64>,
     v: Vec<i64>,
@@ -18,33 +18,24 @@ impl Moon {
         self.p[dir] == m.p[dir] && self.v[dir] == m.v[dir]
     }
 
-    fn potential_energy(&self) -> i64
-    {
+    fn potential_energy(&self) -> i64 {
         self.p.iter().map(|x| x.abs()).sum()
     }
 
-    fn kinetic_energy(&self) -> i64
-    {
+    fn kinetic_energy(&self) -> i64 {
         self.v.iter().map(|x| x.abs()).sum()
     }
 
-    pub fn total_energy(&self) -> i64
-    {
-        self.potential_energy()*self.kinetic_energy()
+    pub fn total_energy(&self) -> i64 {
+        self.potential_energy() * self.kinetic_energy()
     }
 
-    pub fn compare_p_dir(&self, m: & Moon, dir: usize) -> i64
-    {
-        if self.p[dir]<m.p[dir]
-        {
+    pub fn compare_p_dir(&self, m: &Moon, dir: usize) -> i64 {
+        if self.p[dir] < m.p[dir] {
             -1
-        }
-        else if self.p[dir]>m.p[dir]
-        {
+        } else if self.p[dir] > m.p[dir] {
             1
-        }
-        else
-        {
+        } else {
             0
         }
     }
@@ -85,7 +76,7 @@ fn universe_period(moons: &Vec<Moon>) -> u64 {
 fn step_moons(moons: &mut Vec<Moon>, dir: usize) {
     for i in 0..moons.len() {
         for j in i + 1..moons.len() {
-            let v = moons[i].compare_p_dir(&moons[j],dir);
+            let v = moons[i].compare_p_dir(&moons[j], dir);
             moons[i].v[dir] -= v;
             moons[j].v[dir] += v;
         }

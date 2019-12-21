@@ -39,11 +39,10 @@ fn increment_vec(v: &mut Vec<u32>) {
     loop {
         pos -= 1;
         v[pos] = (v[pos] + 1) % 10;
-        if v[pos] != 0
-        {
+        if v[pos] != 0 {
             break;
         }
-    } 
+    }
 }
 
 fn main() {
