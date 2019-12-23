@@ -19,9 +19,8 @@ fn main() {
     let num_machines = 50;
     let mut input_queues = vec![VecDeque::new(); num_machines];
     let mut executors = vec![IntcodeMachine::new(v.clone()); num_machines];
-    for i in 0..num_machines {
-        executors[i].set_input(i as i64);
-    }
+
+    executors.iter_mut().enumerate().for_each(|(i, x)| x.set_input(i as i64));
     let mut i = 0;
 
     loop {
@@ -57,9 +56,9 @@ fn main() {
 
     let mut input_queues = vec![VecDeque::new(); num_machines];
     let mut executors = vec![IntcodeMachine::new(v.clone()); num_machines];
-    for i in 0..num_machines {
-        executors[i].set_input(i as i64);
-    }
+
+    executors.iter_mut().enumerate().for_each(|(i, x)| x.set_input(i as i64));
+
     let mut i = 0;
 
     let mut nat: (i64, i64) = (0, 0);

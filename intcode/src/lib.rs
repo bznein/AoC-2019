@@ -40,7 +40,7 @@ impl Clone for IntcodeMachine
 impl IntcodeMachine {
     pub fn new(program: Vec<i64>) -> IntcodeMachine {
         IntcodeMachine {
-            program: program,
+            program,
             ip: 0,
             relative_base: 0,
             input: None,
