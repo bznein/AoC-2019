@@ -153,12 +153,12 @@ fn main() {
     }
     println!("Part 1: {}", max_asteroids);
     let mut stdout = stdout();
-    execute!(stdout, Clear(ClearType::All));
+ //   execute!(stdout, Clear(ClearType::All));
 
     let mut grid = grid;
     let best_pos = best_pos;
     grid[best_pos.0][best_pos.1] = 'x';
-    print_grid(&grid, None);
+  //  print_grid(&grid, None);
 
     let mut asteroids_pulverized = 0;
 
@@ -172,7 +172,7 @@ fn main() {
             grid[i][best_pos.1] = '.';
             break;
         }
-        print_grid(&grid, None);
+//        print_grid(&grid, None);
     }
 
     let mut part_two_result = 0;
@@ -180,11 +180,11 @@ fn main() {
         current_asteroid = closest_right_side(&grid, pulverizing_line);
         pulverizing_line = (best_pos, current_asteroid);
         asteroids_pulverized += 1;
-        print_grid(&grid, Some(current_asteroid));
-        thread::sleep(Duration::from_millis(50));
+//        print_grid(&grid, Some(current_asteroid));
+   //     thread::sleep(Duration::from_millis(50));
         grid[current_asteroid.0][current_asteroid.1] = '.';
-        print_grid(&grid, None);
-        thread::sleep(Duration::from_millis(50));
+     //   print_grid(&grid, None);
+       // thread::sleep(Duration::from_millis(50));
         if asteroids_pulverized == 200 {
             part_two_result = current_asteroid.1 * 100 + current_asteroid.0;
         }

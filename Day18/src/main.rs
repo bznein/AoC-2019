@@ -166,7 +166,7 @@ fn path(grid: &mut Vec<Vec<char>>, doors: &HashSet<char>, colormap: &HashMap<cha
     );
 
     let result = result.unwrap();
-
+/*
     let mut old_p = &result[0];
     let mut stdout = stdout();
     let mut keys = vec!['.'; 26];
@@ -186,7 +186,7 @@ fn path(grid: &mut Vec<Vec<char>>, doors: &HashSet<char>, colormap: &HashMap<cha
         }
         grid[old_p.0][old_p.1] = '@';
         steps += 1;
-    }
+    }*/
 
     result.len() as i32 - 1
 }
@@ -363,7 +363,7 @@ fn path2(grid: &mut Vec<Vec<char>>, doors: &HashSet<char>, colormap: &HashMap<ch
     );
 
     let result = result.unwrap();
-    let mut old_p = &result[0];
+   /* let mut old_p = &result[0];
     let mut stdout = stdout();
     let mut steps = 0;
     for p in result.iter().skip(1) {
@@ -381,7 +381,7 @@ fn path2(grid: &mut Vec<Vec<char>>, doors: &HashSet<char>, colormap: &HashMap<ch
         steps += 1;
         print_grid2(&grid, colormap, bot_p, &p.keys, steps);
         old_p = p;
-    }
+    }*/
 
     result.len() as i32 - 1
 }
@@ -405,7 +405,7 @@ fn main() {
         .map(|x| x.to_ascii_uppercase())
         .collect();
 
-    let colormap = hashmap! {
+   let colormap = hashmap! {
         'A' => Color::Rgb{r: 255, g: 255, b: 128},
         'B' => Color::Rgb{r: 240, g: 163, b: 255},
         'C' => Color::Rgb{r: 0, g: 117, b: 220},
@@ -434,6 +434,6 @@ fn main() {
         'Z' => Color::Rgb{r: 255, g: 80, b: 5},
     };
 
-    //  println!("Path: {}", path(& mut grid.clone(), &doors, &colormap));
+    println!("Path: {}", path(& mut grid.clone(), &doors, &colormap));
     println!("Path: {}", path2(&mut grid, &doors, &colormap));
 }

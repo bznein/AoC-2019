@@ -30,19 +30,19 @@ fn print_space(m: &HashMap<(i32, i32), char>, d_position: (i32, i32)) {
     }
 }
 
-fn fill(m: &mut HashMap<(i32, i32), char>, position: (i32, i32), steps: i32) {
+fn fill(m: &mut HashMap<(i32, i32), char>, position: (i32, i32), steps: i32, most_steps: &mut i32) {
     m.insert(position, 'O');
     let mut print_steps: bool = true;
     for command in 1..=4 {
         let position = move_position(position, command);
         if m.contains_key(&position) && *m.get(&position).unwrap() == ' ' {
             // print_space(m,(-100,-100));
-            fill(m, position, steps + 1);
+            fill(m, position, steps + 1, most_steps);
             print_steps = false;
         }
     }
-    if print_steps {
-        println!("Part 2: {}", steps);
+    if print_steps && steps>*most_steps{
+        *most_steps = steps;
     }
 }
 
@@ -113,5 +113,7 @@ fn main() {
     m.insert((0, 0), 'S');
     explore(&mut m, &mut visited, (0, 0), executor.clone(), 0);
     // print_space(&m, (-1000,-1000));
-    fill(&mut m, (14, -14), 0);
+    let mut steps=0;
+    fill(&mut m, (14, -14), 0, &mut steps);
+    println!("Part 2: {}", steps);
 }

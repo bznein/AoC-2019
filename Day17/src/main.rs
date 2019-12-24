@@ -154,7 +154,7 @@ fn main() {
         executor.run();
         if executor.state() == State::Stopped {
             match executor.get_output() {
-                Some(x) => print!("{}", x as u8 as char),
+                Some(x) => (),//print!("{}", x as u8 as char),
                 None => break,
             }
             let x = executor.get_output().unwrap() as u8 as char;
@@ -184,11 +184,10 @@ fn main() {
     }
 
     part_1(&grid);
-    generate_moves(&grid, start_position, start_orientation);
     v[0] = 2;
     let mut executor = IntcodeMachine::new(v.clone());
 
-    /*let mut inputs = Vec::new();
+    let mut inputs = Vec::new();
 
     inputs.push('A' as u8 as i64);
     inputs.push(',' as u8 as i64);
@@ -209,9 +208,9 @@ fn main() {
     inputs.push('C' as u8 as i64);
     inputs.push(',' as u8 as i64);
     inputs.push('A' as u8 as i64);
-    inputs.push('\n' as u8 as i64);*/
+    inputs.push('\n' as u8 as i64);
     /* Function A */
-    /*inputs.push('R' as u8 as i64);
+    inputs.push('R' as u8 as i64);
     inputs.push(',' as u8 as i64);
     inputs.push('4' as u8 as i64);
     inputs.push(',' as u8 as i64);
@@ -229,10 +228,10 @@ fn main() {
     inputs.push(',' as u8 as i64);
     inputs.push('1' as u8 as i64);
     inputs.push('2' as u8 as i64);
-    inputs.push('\n' as u8 as i64);*/
+    inputs.push('\n' as u8 as i64);
     /*----------------------------*/
     /* Function B */
-    /*inputs.push('L' as u8 as i64);
+    inputs.push('L' as u8 as i64);
     inputs.push(',' as u8 as i64);
     inputs.push('1' as u8 as i64);
     inputs.push('2' as u8 as i64);
@@ -245,10 +244,10 @@ fn main() {
     inputs.push(',' as u8 as i64);
     inputs.push('1' as u8 as i64);
     inputs.push('2' as u8 as i64);
-    inputs.push('\n' as u8 as i64);*/
+    inputs.push('\n' as u8 as i64);
     /*----------------------------*/
     /* Function C */
-    /*	inputs.push('L' as u8 as i64);
+    inputs.push('L' as u8 as i64);
     inputs.push(',' as u8 as i64);
     inputs.push('1' as u8 as i64);
     inputs.push('2' as u8 as i64);
@@ -261,36 +260,46 @@ fn main() {
     inputs.push(',' as u8 as i64);
     inputs.push('1' as u8 as i64);
     inputs.push('0' as u8 as i64);
-    inputs.push('\n' as u8 as i64);*/
+    inputs.push('\n' as u8 as i64);
     /*----------------------------*/
-    /*inputs.push('n' as u8 as i64);
+    inputs.push('n' as u8 as i64);
     inputs.push('\n' as u8 as i64);
     let mut i =0;
+    let mut val =0;
     loop
     {
         executor.run();
-        if executor.state()==State::Stopped
+        match executor.state()
         {
-            match executor.get_output()
+            State::Stopped =>
             {
-                Some(x) =>
+                match executor.get_output()
                 {
-                    match x
+                    Some(x) =>
                     {
-                        35|10|46|118|94|62|60 => print!("{}", x as u8 as char),
-                        _ => {
-                            println!("Dust 2: {}", x);
-                            println!("{:?}", executor.state());
+                        match x
+                        {
+                            35|10|46|118|94|62|60 =>(),// print!("{}", x as u8 as char),
+                            _ => val=x,
                         }
                     }
+                    None => break
                 }
-                None => break
+            }
+            State::WaitingForInput =>
+            {
+                executor.set_input(inputs[i]);
+                i+=1;
+            }
+            State::Halted =>
+            {
+                println!("Part 2: {}", val);
+                break;
+            }
+            State::Running =>
+            {
+                panic!("Still running!");
             }
         }
-        else if executor.state()==State::WaitingForInput
-        {
-            executor.set_input(inputs[i]);
-            i+=1;
-        }
-    }*/
+    }
 }

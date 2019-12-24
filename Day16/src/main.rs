@@ -89,7 +89,7 @@ fn main() {
     let message_offset = 5979673;
     let phases = 100;
     v = fft(&mut v, phases);
-    println!("{:?}", &v[0..8]);
+    println!("Part 1: {:?}", &v[0..8]);
     p2_v = fft_offset(&mut p2_v, phases, message_offset);
-    println!("{:?}", &p2_v[message_offset..message_offset + 8]);
+    println!("Part 2: {:?}", &p2_v[message_offset..message_offset + 8]);
 }

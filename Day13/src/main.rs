@@ -97,7 +97,7 @@ fn main() {
 
     println!("Part 1: {}", blocks);
     let mut stdout = stdout();
-    execute!(stdout, Clear(ClearType::All));
+//    execute!(stdout, Clear(ClearType::All));
 
     let mut v = v;
     let mut ball_x = 0;
@@ -140,7 +140,8 @@ fn main() {
         }
 
         m.insert((x, y), t_id);
-        print_game(&m, (min_x, min_y, max_x, max_y), Some(score));
-        thread::sleep(Duration::from_millis(1));
+        //print_game(&m, (min_x, min_y, max_x, max_y), Some(score));
+        //thread::sleep(Duration::from_millis(1));
     }
+    println!("Part 2: {}", score);
 }

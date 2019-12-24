@@ -159,11 +159,11 @@ fn path2(
     let result = result.unwrap();
 
     let mut jumps = 0;
-    print_grid(grid, start_position, 0);
+//    print_grid(grid, start_position, 0);
     let mut old_p = (start_position, 0);
     let mut stdout = stdout();
     for p in result.iter().skip(1) {
-        execute!(stdout, SetForegroundColor(Color::Red));
+    /*    execute!(stdout, SetForegroundColor(Color::Red));
         execute!(stdout, MoveTo((p.0).1 as u16, (p.0).0 as u16));
         print!("@");
         execute!(stdout, SetForegroundColor(Color::Reset));
@@ -174,11 +174,11 @@ fn path2(
         print!("Depth: {}", p.1);
 
         stdout.flush().unwrap();
-        thread::sleep(Duration::from_millis(100));
+        thread::sleep(Duration::from_millis(100));*/
         if passages.contains_key(&(p.0)) {
             jumps += 1;
         }
-        old_p = *p;
+     //   old_p = *p;
     }
     result.len() as i32 - 1 + jumps
 }
@@ -191,12 +191,14 @@ fn main() {
         input.truncate(input.len() - 1);
     }
 
-    let mut grid: Vec<Vec<char>> = input
+    let mut
+        grid: Vec<Vec<char>> = input
         .split('\n')
         .map(|x| x.trim_end().chars().collect::<Vec<char>>())
         .collect();
 
-    let mut portals: HashMap<String, Vec<(usize, usize)>> = HashMap::new();
+    let mut
+        portals: HashMap<String, Vec<(usize, usize)>> = HashMap::new();
 
     for (i, r) in grid.iter().enumerate() {
         for (j, val) in r.iter().enumerate() {

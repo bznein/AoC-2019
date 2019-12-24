@@ -13,18 +13,13 @@ fn requirements(x: i32) -> i32 {
 fn main() {
     let mut input = String::new();
     io::stdin().read_to_string(&mut input).unwrap();
-    println!(
-        "Part 1 {:?}",
-        input
-            .split_whitespace()
-            .map(|x| x.parse::<i32>().unwrap() / 3 - 2)
-            .sum::<i32>()
-    );
-    println!(
-        "Part 2 {:?}",
-        input
-            .split_whitespace()
-            .map(|x| requirements(x.parse::<i32>().unwrap()))
-            .sum::<i32>()
-    );
+    let res = input
+        .split_whitespace()
+        .fold((0,0), |acc,x|
+              {
+                  let v = x.parse::<i32>().unwrap();
+                  (acc.0+v,acc.1+requirements(v))
+              });
+    println!("Part 1 {}\nPart2: {}", res.0, res.1);
+ 
 }

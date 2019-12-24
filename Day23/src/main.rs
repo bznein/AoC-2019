@@ -20,7 +20,10 @@ fn main() {
     let mut input_queues = vec![VecDeque::new(); num_machines];
     let mut executors = vec![IntcodeMachine::new(v.clone()); num_machines];
 
-    executors.iter_mut().enumerate().for_each(|(i, x)| x.set_input(i as i64));
+    executors
+        .iter_mut()
+        .enumerate()
+        .for_each(|(i, x)| x.set_input(i as i64));
 
     let mut i = 0;
 
@@ -46,9 +49,8 @@ fn main() {
                             break;
                         }
                         last_y_to_0 = nat.1;
-                        for i in &mut is_idle
-                        {
-                            *i=0;
+                        for i in &mut is_idle {
+                            *i = 0;
                         }
                     }
                     -1
@@ -63,13 +65,12 @@ fn main() {
                     input_queues[val as usize].push_back(x);
                 } else {
                     nat.0 = x;
-                    part_one_end +=1;
+                    part_one_end += 1;
                 }
                 executors[i].run();
                 let y = executors[i].get_output().unwrap();
                 if val == 255 {
-                    if part_one_end==1
-                    {
+                    if part_one_end == 1 {
                         println!("Part 1: {}", y);
                     }
                     nat.1 = y;

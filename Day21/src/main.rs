@@ -21,13 +21,16 @@ fn main() {
 
     let mut executor = IntcodeMachine::new(v.clone());
 
+        
     let mut input_idx = 0;
     let commands = string_to_command(String::from(
         "OR A J
+
          AND C J
          NOT J J
          AND D J
          WALK
+
          "));
     loop {
         executor.run();
@@ -41,6 +44,7 @@ fn main() {
                     println!("Part 1: {}\n\n", val);
                 }
             }
+
             State::WaitingForInput => {
                 executor.set_input(commands[input_idx]);
                 input_idx += 1;
