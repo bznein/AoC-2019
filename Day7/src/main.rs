@@ -31,6 +31,7 @@ fn main() {
         amps = Vec::new();
         for item in values.iter().take(5) {
             let mut executor = IntcodeMachine::new(v.clone());
+
             executor.set_phase(*item);
             amps.push(executor);
         }
@@ -72,7 +73,7 @@ fn main() {
         loop {
             amps[0].set_input(input);
             amps[0].run();
-            let mut vv = amps[0].get_output();
+            let vv = amps[0].get_output();
             if !vv.is_some() {
                 if input > max_signal {
                     max_signal = input;
